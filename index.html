@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f6f3ed">
+    <title>AX-CPT 测试</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section id="setupScreen" class="screen screen-active" aria-labelledby="appTitle">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Cognitive Control</p>
+            <h1 id="appTitle">AX-CPT 测试</h1>
+          </div>
+          <div class="run-meta" id="runMeta">手机短测</div>
+        </header>
+
+        <div class="mode-switch" role="tablist" aria-label="测试模式">
+          <button class="mode-button active" type="button" data-mode="semantic" role="tab" aria-selected="true">
+            语义新颖
+          </button>
+          <button class="mode-button" type="button" data-mode="classic" role="tab" aria-selected="false">
+            传统字母
+          </button>
+        </div>
+
+        <section class="setup-panel">
+          <div class="mode-visual" aria-hidden="true">
+            <div class="stimulus-strip">
+              <span id="previewCue">结交朋友</span>
+              <span class="strip-line"></span>
+              <span id="previewProbe">参加辩论</span>
+            </div>
+            <div class="response-preview">
+              <span>是</span>
+              <span>否</span>
+            </div>
+          </div>
+
+          <div class="copy-block">
+            <h2 id="modeTitle">语义新颖 AX-CPT</h2>
+            <p id="modeCopy">记住每个 block 的固定 AX 配对。配对完全一致按“是”，其他组合按“否”。</p>
+          </div>
+
+          <div class="segmented" aria-label="试次数">
+            <button type="button" class="length-button active" data-length="short">短测</button>
+            <button type="button" class="length-button" data-length="standard">标准</button>
+            <button type="button" class="length-button" data-length="full">完整</button>
+          </div>
+
+          <div class="summary-grid" aria-label="当前设置">
+            <div>
+              <span>试次</span>
+              <strong id="setupTrials">80</strong>
+            </div>
+            <div>
+              <span>目标</span>
+              <strong id="setupTarget">AX</strong>
+            </div>
+            <div>
+              <span>反应</span>
+              <strong>是 / 否</strong>
+            </div>
+          </div>
+        </section>
+
+        <button id="startButton" class="primary-action" type="button">开始测试</button>
+      </section>
+
+      <section id="blockScreen" class="screen" aria-live="polite">
+        <header class="compact-header">
+          <p id="blockKicker">Block 1</p>
+          <h2 id="blockTitle">记住目标配对</h2>
+        </header>
+        <div class="pair-lockup">
+          <div>
+            <span>cue</span>
+            <strong id="blockCue">A</strong>
+          </div>
+          <div class="pair-arrow">→</div>
+          <div>
+            <span>probe</span>
+            <strong id="blockProbe">X</strong>
+          </div>
+        </div>
+        <p id="blockScenario" class="scenario-text"></p>
+        <button id="continueButton" class="primary-action" type="button">继续</button>
+      </section>
+
+      <section id="trialScreen" class="screen trial-screen">
+        <header class="trial-header">
+          <div>
+            <span id="trialModeLabel">语义新颖</span>
+            <strong id="trialConditionLabel">Novel</strong>
+          </div>
+          <div class="progress-wrap" aria-label="测试进度">
+            <div id="progressBar"></div>
+          </div>
+          <div id="trialCounter">1 / 80</div>
+        </header>
+
+        <div class="stimulus-stage" aria-live="assertive">
+          <div id="phaseLabel" class="phase-label">准备</div>
+          <div id="stimulusText" class="stimulus-text">+</div>
+        </div>
+
+        <div class="response-pad" aria-label="反应按钮">
+          <button id="yesButton" type="button" class="response-button yes">是</button>
+          <button id="noButton" type="button" class="response-button no">否</button>
+        </div>
+      </section>
+
+      <section id="resultsScreen" class="screen">
+        <header class="topbar result-topbar">
+          <div>
+            <p class="eyebrow">Results</p>
+            <h1>主要结果</h1>
+          </div>
+          <button id="restartButton" type="button" class="ghost-action">再测一次</button>
+        </header>
+
+        <div id="resultCards" class="result-cards"></div>
+        <section class="result-section">
+          <h2>分条件表现</h2>
+          <div class="table-scroll">
+            <table id="resultTable"></table>
+          </div>
+        </section>
+        <section class="result-section">
+          <h2>控制模式指标</h2>
+          <div id="interpretation" class="interpretation"></div>
+        </section>
+        <div class="result-actions">
+          <button id="downloadButton" type="button" class="secondary-action">下载 JSON</button>
+          <button id="copyButton" type="button" class="secondary-action">复制摘要</button>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
