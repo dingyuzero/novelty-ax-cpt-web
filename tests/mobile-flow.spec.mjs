@@ -7,7 +7,7 @@ test.use({
 });
 
 test("mobile practice flow reaches results", async ({ page }) => {
-  await page.goto("http://127.0.0.1:8080/");
+  await page.goto(process.env.BASE_URL || "http://127.0.0.1:8080/");
   await expect(page.locator("#appTitle")).toBeVisible();
   await page.locator("#participantInput").fill("MOBILE001");
   await page.getByRole("button", { name: "开始当前实验" }).click();
