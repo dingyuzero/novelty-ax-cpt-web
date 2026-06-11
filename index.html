@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#f6f3ed">
-    <title>AX-CPT 测试</title>
+    <meta name="theme-color" content="#f7f7f4">
+    <title>Stroop-CPT 与颜色 AX-CPT 测试</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -12,129 +12,159 @@
       <section id="setupScreen" class="screen screen-active" aria-labelledby="appTitle">
         <header class="topbar">
           <div>
-            <p class="eyebrow">Cognitive Control</p>
-            <h1 id="appTitle">AX-CPT 测试</h1>
+            <p class="eyebrow">CPT Battery</p>
+            <h1 id="appTitle">Stroop-CPT 与颜色 AX-CPT</h1>
           </div>
-          <div class="run-meta" id="runMeta">手机短测</div>
+          <div class="run-meta" id="durationEstimate">约 8 分钟</div>
         </header>
 
-        <div class="mode-switch" role="tablist" aria-label="测试模式">
-          <button class="mode-button active" type="button" data-mode="semantic" role="tab" aria-selected="true">
-            语义新颖
-          </button>
-          <button class="mode-button" type="button" data-mode="classic" role="tab" aria-selected="false">
-            传统字母
-          </button>
-        </div>
+        <section class="setup-band" aria-label="被试信息">
+          <label>
+            <span>被试编号</span>
+            <input id="participantInput" type="text" autocomplete="off" placeholder="例如 CDS001">
+          </label>
+          <label>
+            <span>组别</span>
+            <select id="groupSelect">
+              <option value="control">正常对照</option>
+              <option value="cds">CDS</option>
+              <option value="adhd">ADHD</option>
+              <option value="cds_adhd">CDS + ADHD</option>
+              <option value="other">其他</option>
+            </select>
+          </label>
+        </section>
 
-        <section class="setup-panel">
-          <div class="mode-visual" aria-hidden="true">
-            <div class="stimulus-strip">
-              <span id="previewCue">结交朋友</span>
-              <span class="strip-line"></span>
-              <span id="previewProbe">参加辩论</span>
-            </div>
-            <div class="response-preview">
-              <span>是</span>
-              <span>否</span>
+        <section class="setup-section" aria-labelledby="experimentHeading">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Experiment</p>
+              <h2 id="experimentHeading">选择实验</h2>
             </div>
           </div>
+          <div id="experimentCards" class="experiment-grid"></div>
+        </section>
 
-          <div class="copy-block">
-            <h2 id="modeTitle">语义新颖 AX-CPT</h2>
-            <p id="modeCopy">记住每个 block 的固定 AX 配对。配对完全一致按“是”，其他组合按“否”。</p>
+        <section class="setup-section compact-options" aria-label="实验设置">
+          <div>
+            <p class="eyebrow">Mode</p>
+            <div class="segmented" role="tablist" aria-label="测试模式">
+              <button class="segment-button active" type="button" data-run-mode="practice" role="tab" aria-selected="true">练习</button>
+              <button class="segment-button" type="button" data-run-mode="formal" role="tab" aria-selected="false">正式</button>
+            </div>
           </div>
-
-          <div class="segmented" aria-label="试次数">
-            <button type="button" class="length-button active" data-length="short">短测</button>
-            <button type="button" class="length-button" data-length="standard">标准</button>
-            <button type="button" class="length-button" data-length="full">完整</button>
-          </div>
-
-          <div class="summary-grid" aria-label="当前设置">
-            <div>
-              <span>试次</span>
-              <strong id="setupTrials">80</strong>
-            </div>
-            <div>
-              <span>目标</span>
-              <strong id="setupTarget">AX</strong>
-            </div>
-            <div>
-              <span>反应</span>
-              <strong>是 / 否</strong>
-            </div>
+          <div>
+            <p class="eyebrow">Response</p>
+            <div class="mapping-preview" id="mappingPreview"></div>
           </div>
         </section>
 
-        <button id="startButton" class="primary-action" type="button">开始测试</button>
+        <section class="preview-band" aria-label="当前实验预览">
+          <div class="preview-stage">
+            <div id="previewCue" class="preview-stimulus"></div>
+            <span class="preview-gap"></span>
+            <div id="previewProbe" class="preview-stimulus"></div>
+          </div>
+          <p id="experimentSummary" class="summary-copy"></p>
+          <dl class="summary-grid">
+            <div>
+              <dt>正式试次</dt>
+              <dd id="formalTrials">96</dd>
+            </div>
+            <div>
+              <dt>练习试次</dt>
+              <dd id="practiceTrials">8</dd>
+            </div>
+            <div>
+              <dt>Block</dt>
+              <dd id="blockCount">4</dd>
+            </div>
+          </dl>
+        </section>
+
+        <button id="startButton" class="primary-action" type="button">开始当前实验</button>
       </section>
 
       <section id="blockScreen" class="screen" aria-live="polite">
         <header class="compact-header">
-          <p id="blockKicker">Block 1</p>
-          <h2 id="blockTitle">记住目标配对</h2>
+          <div>
+            <p id="blockKicker" class="eyebrow">Block 1 / 4</p>
+            <h2 id="blockTitle">准备开始</h2>
+          </div>
+          <div id="blockModeBadge" class="run-meta">正式</div>
         </header>
-        <div class="pair-lockup">
-          <div>
-            <span>cue</span>
-            <strong id="blockCue">A</strong>
-          </div>
-          <div class="pair-arrow">→</div>
-          <div>
-            <span>probe</span>
-            <strong id="blockProbe">X</strong>
-          </div>
-        </div>
-        <p id="blockScenario" class="scenario-text"></p>
+        <div id="rulePreview" class="rule-preview"></div>
+        <p id="blockInstruction" class="instruction-copy"></p>
         <button id="continueButton" class="primary-action" type="button">继续</button>
       </section>
 
       <section id="trialScreen" class="screen trial-screen">
         <header class="trial-header">
-          <div>
-            <span id="trialModeLabel">语义新颖</span>
-            <strong id="trialConditionLabel">Novel</strong>
+          <div class="trial-label">
+            <span id="trialExperimentLabel">Late Stroop-CPT</span>
+            <strong id="trialConditionLabel">短延迟</strong>
           </div>
-          <div class="progress-wrap" aria-label="测试进度">
+          <div class="progress-wrap" aria-label="实验进度">
             <div id="progressBar"></div>
           </div>
-          <div id="trialCounter">1 / 80</div>
+          <div id="trialCounter">1 / 96</div>
         </header>
 
         <div class="stimulus-stage" aria-live="assertive">
           <div id="phaseLabel" class="phase-label">准备</div>
-          <div id="stimulusText" class="stimulus-text">+</div>
+          <div id="stimulusHost" class="stimulus-host">+</div>
         </div>
 
         <div class="response-pad" aria-label="反应按钮">
-          <button id="yesButton" type="button" class="response-button yes">是</button>
-          <button id="noButton" type="button" class="response-button no">否</button>
+          <button id="leftResponseButton" type="button" class="response-button"></button>
+          <button id="rightResponseButton" type="button" class="response-button"></button>
         </div>
+      </section>
+
+      <section id="thoughtScreen" class="screen thought-screen" aria-labelledby="thoughtHeading">
+        <header class="compact-header">
+          <div>
+            <p class="eyebrow">Thought Probe</p>
+            <h2 id="thoughtHeading">刚才这几题，你的注意主要在哪里？</h2>
+          </div>
+        </header>
+        <div id="thoughtOptions" class="thought-options"></div>
       </section>
 
       <section id="resultsScreen" class="screen">
         <header class="topbar result-topbar">
           <div>
             <p class="eyebrow">Results</p>
-            <h1>主要结果</h1>
+            <h1 id="resultTitle">主要结果</h1>
           </div>
-          <button id="restartButton" type="button" class="ghost-action">再测一次</button>
+          <button id="restartButton" type="button" class="ghost-action">返回设置</button>
         </header>
 
         <div id="resultCards" class="result-cards"></div>
+
+        <section class="result-section">
+          <h2>关键指标</h2>
+          <div id="indexCards" class="index-cards"></div>
+        </section>
+
         <section class="result-section">
           <h2>分条件表现</h2>
           <div class="table-scroll">
-            <table id="resultTable"></table>
+            <table id="conditionTable"></table>
           </div>
         </section>
+
         <section class="result-section">
-          <h2>控制模式指标</h2>
-          <div id="interpretation" class="interpretation"></div>
+          <h2>Block 与 Thought Probe</h2>
+          <div class="table-scroll">
+            <table id="blockTable"></table>
+          </div>
+          <div id="thoughtSummary" class="interpretation"></div>
         </section>
+
         <div class="result-actions">
-          <button id="downloadButton" type="button" class="secondary-action">下载 JSON</button>
+          <button id="downloadJsonButton" type="button" class="secondary-action">下载 JSON</button>
+          <button id="downloadCsvButton" type="button" class="secondary-action">下载 CSV</button>
           <button id="copyButton" type="button" class="secondary-action">复制摘要</button>
         </div>
       </section>

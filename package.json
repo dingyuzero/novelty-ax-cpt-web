@@ -1,9 +1,13 @@
 {
-  "name": "novelty-ax-cpt-web",
+  "name": "stroop-cpt-web-battery",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/smoke.mjs"
+    "test": "node tests/smoke.mjs",
+    "test:mobile": "playwright test --browser=chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
   }
 }
